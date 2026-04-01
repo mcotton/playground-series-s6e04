@@ -45,15 +45,18 @@
 - Correlation was computed via ordinal encoding of target (Low=1, Medium=2, High=3); used for exploration only, not for modeling
 
 ## Current State
-- EDA in progress
-- No model or CV pipeline set up yet
+- Pipeline in `common.py`, model code in `xgboost.ipynb`
+- XGBoost with native categorical support (`enable_categorical=True`), default hyperparameters
+- Mulching_Used mapped to 0/1, target mapped to Low=0, Medium=1, High=2
+- Train/test split (80/20, stratified, random_state=123)
+- Baseline scores: 98.5% accuracy, **96.1% balanced accuracy** (holdout)
 
 ---
 
 ## Things to Try
 
 ### Baseline (Priority: High)
-- [ ] Get a baseline boosted tree model working
+- [x] Get a baseline XGBoost model working — 96.1% balanced accuracy (holdout)
 - [ ] Set up cross-validation with balanced accuracy scoring
 - [ ] Establish baseline CV score
 
@@ -69,8 +72,8 @@
 - [ ] Service/feature counts or grouped combinations
 
 ### Encoding Strategies (Priority: Medium)
-- [ ] OHE (current for correlation analysis)
-- [ ] Native categorical support in LightGBM/XGBoost
+- [x] OHE — used for correlation analysis
+- [x] XGBoost native categorical support — used for baseline model
 - [ ] Target encoding (with proper CV fold separation)
 
 ### Model Options (Priority: Medium)
@@ -92,6 +95,9 @@
 - Getting High class right is critical despite it being only 3.3% of data
 - Ordinal encoding for correlation doesn't affect results (shift-invariant) but assumes linear relationship
 - Trees don't need ordinal encoding of target — will use raw class labels
+- Baseline XGBoost (default params): 98.5% accuracy but 96.1% balanced accuracy — confirms model is weaker on High class
+- `sample_weight` expects one weight per sample, not one per class — use `balanced_accuracy_score` for evaluation
+- Stratifying train/test split didn't change scores meaningfully at 630K rows — expected, but good practice
 
 ## Experiment Log
 See `submission_notes.ipynb` for per-submission details.
