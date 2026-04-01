@@ -100,4 +100,10 @@
 - Stratifying train/test split didn't change scores meaningfully at 630K rows — expected, but good practice
 
 ## Experiment Log
+
+| # | Description | CV | LB | Notes |
+|---|------------|----|----|-------|
+| 01 | XGBoost baseline, default params, native categoricals | 0.9611 (holdout) | 0.9590 | Healthy holdout-to-LB gap |
+| 02 | Same as 01 but trained on full training set | — | 0.9596 | Small bump from more training data |
+
 See `submission_notes.ipynb` for per-submission details.
