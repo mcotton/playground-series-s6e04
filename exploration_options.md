@@ -62,7 +62,7 @@
 - [x] Establish baseline CV score — 0.96217 ± 0.00117
 
 ### Class Imbalance (Priority: High — given metric)
-- [ ] Investigate `sample_weight` or `scale_pos_weight` for the minority class
+- [x] Investigate `sample_weight` — balanced weights gave +0.007 CV boost (0.9622 → 0.9695)
 - [ ] Try oversampling High class (SMOTE or random)
 - [ ] Check predicted probability distributions per class — is the model separating High from others?
 - [ ] Threshold tuning for class assignment
@@ -101,6 +101,8 @@
 - Stratifying train/test split didn't change scores meaningfully at 630K rows — expected, but good practice
 - 10-fold CV with 630K rows gives tight std — reliable for comparing experiments
 - CV (0.9622) > LB (0.9596) gap is small and expected; track both to confirm they move together
+- Balanced sample weights gave biggest single improvement so far (+0.007 CV) — model was undertreating High class
+- CV-to-LB correlation is strong: 0.9695 CV → 0.9688 LB; can trust CV for iteration
 
 ## Experiment Log
 
@@ -109,5 +111,6 @@
 | 01 | XGBoost baseline, default params, native categoricals | 0.9611 (holdout) | 0.9590 | Healthy holdout-to-LB gap |
 | 02 | Same as 01 but trained on full training set | — | 0.9596 | Small bump from more training data |
 | — | 10-fold stratified CV baseline | 0.96217 ± 0.00117 | — | Stable, tight std; CV > LB gap is normal |
+| 03 | Sample weights (balanced), full training set | 0.96949 ± 0.00158 | 0.96883 | Big jump; CV-to-LB gap very small |
 
 See `submission_notes.ipynb` for per-submission details.
