@@ -50,6 +50,7 @@
 - Mulching_Used mapped to 0/1, target mapped to Low=0, Medium=1, High=2
 - Train/test split (80/20, stratified, random_state=123)
 - Baseline scores: 98.5% accuracy, **96.1% balanced accuracy** (holdout)
+- 10-fold stratified CV: **0.96217 ± 0.00117**
 
 ---
 
@@ -57,8 +58,8 @@
 
 ### Baseline (Priority: High)
 - [x] Get a baseline XGBoost model working — 96.1% balanced accuracy (holdout)
-- [ ] Set up cross-validation with balanced accuracy scoring
-- [ ] Establish baseline CV score
+- [x] Set up 10-fold stratified CV with balanced accuracy scoring
+- [x] Establish baseline CV score — 0.96217 ± 0.00117
 
 ### Class Imbalance (Priority: High — given metric)
 - [ ] Investigate `sample_weight` or `scale_pos_weight` for the minority class
@@ -98,6 +99,8 @@
 - Baseline XGBoost (default params): 98.5% accuracy but 96.1% balanced accuracy — confirms model is weaker on High class
 - `sample_weight` expects one weight per sample, not one per class — use `balanced_accuracy_score` for evaluation
 - Stratifying train/test split didn't change scores meaningfully at 630K rows — expected, but good practice
+- 10-fold CV with 630K rows gives tight std — reliable for comparing experiments
+- CV (0.9622) > LB (0.9596) gap is small and expected; track both to confirm they move together
 
 ## Experiment Log
 
@@ -105,5 +108,6 @@
 |---|------------|----|----|-------|
 | 01 | XGBoost baseline, default params, native categoricals | 0.9611 (holdout) | 0.9590 | Healthy holdout-to-LB gap |
 | 02 | Same as 01 but trained on full training set | — | 0.9596 | Small bump from more training data |
+| — | 10-fold stratified CV baseline | 0.96217 ± 0.00117 | — | Stable, tight std; CV > LB gap is normal |
 
 See `submission_notes.ipynb` for per-submission details.
