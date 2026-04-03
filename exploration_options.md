@@ -85,7 +85,7 @@
 - [ ] Ensemble/stacking
 
 ### Advanced (Priority: Low)
-- [ ] Original dataset blending (original Irrigation Prediction dataset)
+- [x] Original dataset blending — +0.0007 CV, confirmed on LB
 - [ ] Pseudo-labeling with confident predictions
 - [ ] Feature selection (drop low-importance features)
 
@@ -103,6 +103,7 @@
 - CV (0.9622) > LB (0.9596) gap is small and expected; track both to confirm they move together
 - Balanced sample weights gave biggest single improvement so far (+0.007 CV) — model was undertreating High class
 - CV-to-LB correlation is strong: 0.9695 CV → 0.9688 LB; can trust CV for iteration
+- Original dataset (10K rows, same columns minus id) adds modest signal despite being small; std increases slightly from distribution differences
 
 ## Experiment Log
 
@@ -112,5 +113,6 @@
 | 02 | Same as 01 but trained on full training set | — | 0.9596 | Small bump from more training data |
 | — | 10-fold stratified CV baseline | 0.96217 ± 0.00117 | — | Stable, tight std; CV > LB gap is normal |
 | 03 | Sample weights (balanced), full training set | 0.96949 ± 0.00158 | 0.96883 | Big jump; CV-to-LB gap very small |
+| 04 | + original dataset (10K rows) | 0.97019 ± 0.00221 | 0.96986 | Small gain; original data adds some signal |
 
 See `submission_notes.ipynb` for per-submission details.
