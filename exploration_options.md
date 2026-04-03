@@ -67,10 +67,12 @@
 - [ ] Check predicted probability distributions per class — is the model separating High from others?
 - [ ] Threshold tuning for class assignment
 
-### Feature Engineering (Priority: Medium)
-- [ ] Interaction features (e.g., Soil_Moisture x Temperature, Crop_Growth_Stage x Mulching)
+### Feature Engineering (Priority: High — next focus)
+- [ ] Interaction features between top correlated numerics (Soil_Moisture x Temperature, Soil_Moisture x Wind_Speed — evaporation is combinatorial)
+- [ ] Crop_Growth_Stage x Mulching interaction — water retention varies by both
+- [ ] Ratio features (e.g., Rainfall_mm / Temperature_C as net moisture proxy)
+- [ ] Group-based features — weak categoricals (Region, Crop_Type, etc.) combined with numeric features (e.g., mean Soil_Moisture per Region)
 - [ ] Weak categoricals may gain signal through interactions with numeric features
-- [ ] Service/feature counts or grouped combinations
 
 ### Encoding Strategies (Priority: Medium)
 - [x] OHE — used for correlation analysis
