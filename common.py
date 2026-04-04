@@ -152,19 +152,19 @@ def fill_nas(df):
     return df
 
 
-def find_next_submission_file(data_dir='./archive/'):
-    from glob import glob
+# def find_next_submission_file(data_dir='./archive'):
+#     from glob import glob
 
-    for sub in sorted(glob(f"{data_dir}/submission_*.csv")):
-        print(sub)
-        i = sub.split('submission_')[1].split('.csv')[0]
-        next_file = f"{data_dir}/submission_{int(i)+1}.csv"
-        if int(i)+1 < 10:
-            next_file = f"{data_dir}/submission_0{int(i)+1}.csv"
+#     for sub in sorted(glob(f"{data_dir}/submission_*.csv")):
+#         print(sub)
+#         i = sub.split('submission_')[1].split('.csv')[0]
+#         next_file = f"{data_dir}/submission_{int(i)+1}.csv"
+#         if int(i)+1 < 10:
+#             next_file = f"{data_dir}/submission_0{int(i)+1}.csv"
         
-    return next_file
+#     return next_file
 
-def find_last_submission_file(data_dir='./archive/'):
+def find_last_submission_file(data_dir='./archive'):
     from glob import glob
     submissions = sorted(glob(f"{data_dir}/submission_*.csv"))
 
@@ -172,7 +172,7 @@ def find_last_submission_file(data_dir='./archive/'):
     
     return sub
 
-def find_next_submission_file(data_dir='./archive/'):
+def find_next_submission_file(data_dir='./archive'):
     sub = find_last_submission_file()
     
     i = sub.split('submission_')[1].split('.csv')[0]
