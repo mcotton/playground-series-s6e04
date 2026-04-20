@@ -106,6 +106,9 @@
 - Balanced sample weights gave biggest single improvement so far (+0.007 CV) — model was undertreating High class
 - CV-to-LB correlation is strong: 0.9695 CV → 0.9688 LB; can trust CV for iteration
 - Original dataset (10K rows, same columns minus id) adds modest signal despite being small; std increases slightly from distribution differences
+- CV can go up while LB goes down — warning sign of overfitting to the training distribution (seen with the forum-shared rule logits)
+- Rules/thresholds tuned on the 10K original dataset don't transfer perfectly to the 900K synthetic data (generator introduces noise)
+- XGBoost finds its own thresholds from continuous features — pre-engineered boolean flags add nothing. Useful feature engineering encodes things trees *can't* discover: ratios, products, cross-feature aggregations
 
 ## Experiment Log
 
@@ -116,5 +119,8 @@
 | — | 10-fold stratified CV baseline | 0.96217 ± 0.00117 | — | Stable, tight std; CV > LB gap is normal |
 | 03 | Sample weights (balanced), full training set | 0.96949 ± 0.00158 | 0.96883 | Big jump; CV-to-LB gap very small |
 | 04 | + original dataset (10K rows) | 0.97019 ± 0.00221 | 0.96986 | Small gain; original data adds some signal |
+| 05 | + forum-shared rule logits (3 classes) + boolean thresholds | 0.97045 | 0.96841 | CV up, LB down — overfitting to original's rules |
+| 06 | Only high-class logit + booleans | 0.97010 | 0.96831 | Worse on both — high logit is the worst offender |
+| 07 | Booleans only (no logits) | 0.97019 | 0.96986 | Matches best — trees find splits themselves |
 
 See `submission_notes.ipynb` for per-submission details.
