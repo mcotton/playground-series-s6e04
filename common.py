@@ -75,7 +75,9 @@ def get_features(df):
     
     if target in features:
         features.pop(features.index(target))
-        
+
+    # features = ['rainfall_mm', 'soil_moisture', 'crop_growth_stage', 'temperature_c', 'wind_speed_kmh', 'mulching_used', 'feels_like']
+    
     return features
 
 def make_cluster_features(df):
@@ -114,7 +116,8 @@ def make_new_features(df):
     
     target = get_target()
     features = get_features(df)
-    
+
+    df['feels_like'] = df['temperature_c'] * df['humidity']
 
     # # These featues hurt CV and LB, XGBoost didn't like them
     # df['study_x_attendance'] = df['study_hours'] * df['class_attendance']
