@@ -80,10 +80,10 @@
 - [ ] Target encoding (with proper CV fold separation)
 
 ### Model Options (Priority: Medium)
-- [ ] XGBoost
+- [x] XGBoost — primary model
 - [ ] LightGBM
 - [ ] CatBoost
-- [ ] Hyperparameter tuning
+- [x] Hyperparameter tuning — Optuna with TPE sampler + median pruner; +0.0026 CV gain
 - [ ] Ensemble/stacking
 
 ### Advanced (Priority: Low)
@@ -109,6 +109,9 @@
 - CV can go up while LB goes down — warning sign of overfitting to the training distribution (seen with the forum-shared rule logits)
 - Rules/thresholds tuned on the 10K original dataset don't transfer perfectly to the 900K synthetic data (generator introduces noise)
 - XGBoost finds its own thresholds from continuous features — pre-engineered boolean flags add nothing. Useful feature engineering encodes things trees *can't* discover: ratios, products, cross-feature aggregations
+- `feels_like` (Temperature × Humidity) didn't help — trees can already find any rectangular combination of those features
+- Optuna with median pruning is efficient: 30 trials with 5-fold CV during tuning, validated on full 10-fold afterward. The winning trial had shallow trees (max_depth=3) with high regularization
+- Final result: CV 0.97300 → public LB 0.97045, private LB 0.97209. Top 25% (1048/4316). CV-private gap was ~0.001, so CV was a faithful proxy for the leaderboard
 
 ## Experiment Log
 
@@ -122,5 +125,6 @@
 | 05 | + forum-shared rule logits (3 classes) + boolean thresholds | 0.97045 | 0.96841 | CV up, LB down — overfitting to original's rules |
 | 06 | Only high-class logit + booleans | 0.97010 | 0.96831 | Worse on both — high logit is the worst offender |
 | 07 | Booleans only (no logits) | 0.97019 | 0.96986 | Matches best — trees find splits themselves |
+| 08 | Optuna-tuned XGBoost (30 trials, 5-fold tuning, validated on 10-fold) | 0.97300 ± 0.00153 | 0.97045 (public) / **0.97209 (private)** | **Final submission**; finished 1048/4316 (top 25%) |
 
 See `submission_notes.ipynb` for per-submission details.
